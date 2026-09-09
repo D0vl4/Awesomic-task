@@ -1,0 +1,86 @@
+/*
+ * Design tokens. Names mirror the Figma variable collection 1:1
+ * (slashes become dashes) so a designer can diff the two.
+ */
+:root {
+  /* text */
+  --text-primary: #22242f;
+  --text-secondary: #3e414b;
+  --text-tertiary: #61656c;
+  --text-quaternary: #94979c;
+  --text-inverse: #ffffff;
+  --text-link: #586be4;
+  --text-success: #008a4c;
+  --text-danger: #d92d20;
+  --text-warning: #dc6803;
+  /* darker variants for 12px text on tinted surfaces (>= 4.5:1) */
+  --text-success-strong: #007a43;
+  --text-danger-strong: #b42318;
+  /* Tomato is the mark colour; text and filled chips use the deeper shade */
+  --text-anomaly: #d1431a;
+
+  /* surfaces */
+  --surface-page: #f0f2f8;
+  --card-default-background: #ffffff;
+  --surface-success: rgba(10, 192, 110, 0.2);
+  --surface-danger: rgba(217, 45, 32, 0.2);
+  --surface-warning: rgba(247, 144, 9, 0.1);
+  --surface-anomaly: rgba(255, 102, 68, 0.06);
+  --tab-container-background: #f9f9f9;
+  --tab-container-stroke: #c0c3cc;
+  --tab-item-background-active: #586be4;
+  --button-secondary-background: #eef1ff;
+
+  /* borders */
+  --border-separators: #e3e6ef;
+  --border-accent: #8b9bff;
+
+  /* brand + data */
+  --color-brand-blue-aura: #637dff;
+  --color-brand-tomato: #ff6644;
+  --icon-illustrative: #dce3ff;
+  --icon-default: #3e414b;
+  --data-chart-lines-active: #637dff;
+  --data-chart-lines-inactive: #dce3ff;
+  --data-chart-lines-secondary: #22242f;
+  --data-chart-lines-ghost: #c0c3cc;
+  --data-chart-anomaly: #ff6644;
+  --data-chart-anomaly-strong: #d1431a;
+
+  /* type */
+  --font-family-heading: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-family-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-mono: 'DM Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-size-display-sm: 30px;
+  --font-size-heading-md: 24px;
+  --font-size-heading-sm: 18px;
+  --font-size-text-md: 16px;
+  --font-size-text-sm: 14px;
+  --font-size-text-xs: 12px;
+  --line-height-text-md: 24px;
+  --line-height-text-sm: 20px;
+  --line-height-text-xs: 16px;
+
+  /* spacing */
+  --spacing-0-5: 2px;
+  --spacing-1: 4px;
+  --spacing-1-5: 6px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+
+  /* radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-xl: 12px;
+  --radius-3xl: 24px;
+  --radius-full: 100px;
+
+  /* effects */
+  --shadow-card: 2px 2px 10px 0 rgba(88, 107, 228, 0.12);
+  --shadow-sm: 0 1px 2px -1px rgba(10, 13, 18, 0.1), 0 1px 3px 0 rgba(10, 13, 18, 0.1);
+  --focus-ring: 0 0 0 3px rgba(99, 125, 255, 0.35);
+}
