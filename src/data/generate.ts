@@ -14,10 +14,15 @@ function mulberry32(seed: number) {
 
 const TOTAL_DAYS = 180; // 90 visible + 90 for the "previous period" comparison
 
-/** Last complete day: yesterday, UTC. The dashboard always reads current. */
-export function defaultEnd(now = Date.now()): Date {
-  const d = new Date(now - 86400000);
-  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+/**
+ * Fixed reference day (the last complete day the dashboard shows).
+ * Pinned so the Figma frame, the README and the build show the same
+ * numbers; change here to move the whole series.
+ */
+export const REFERENCE_END = new Date(Date.UTC(2026, 8, 10)); // 10 Sep 2026
+
+export function defaultEnd(): Date {
+  return REFERENCE_END;
 }
 
 /**

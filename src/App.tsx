@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { SERIES } from './data/generate';
 import type { Timeframe } from './data/types';
 import { chartRows, computeKpis, sliceSeries } from './lib/aggregate';
-import { detectAnomalies } from './lib/anomalies';
+import { DEFAULT_MIN_DELTA, DEFAULT_THRESHOLD, DEFAULT_WINDOW, detectAnomalies } from './lib/anomalies';
 import { shortDate } from './lib/format';
 import { AnomalyRail } from './components/AnomalyRail';
 import { BrandMark } from './components/BrandMark';
@@ -27,7 +27,12 @@ export default function App() {
   const slice = useMemo(() => sliceSeries(SERIES, timeframe), [timeframe]);
   const kpis = useMemo(() => computeKpis(slice), [slice]);
   const rows = useMemo(() => chartRows(slice), [slice]);
-  const anomalies = useMemo(() => detectAnomalies(slice.history, slice.current), [slice]);
+  const anomalies = useMemo(
+    () => detectAnomalies(slice.history, slice.current),
+    // The constants are listed so a change to them (hot reload, or a future
+    // settings UI) recomputes the flags instead of serving the cached result.
+    [slice, DEFAULT_WINDOW, DEFAULT_THRESHOLD, DEFAULT_MIN_DELTA],
+  );
 
   const activeId = hovered ?? selected;
   const first = slice.current[0]?.date;

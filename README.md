@@ -4,7 +4,7 @@ Design Engineer test task for Awesomic. The main analytics view of an email-mark
 
 - **Live build:** https://awesomic-task.vercel.app/
 - **Source:** https://github.com/D0vl4/Awesomic-task
-- **Figma:** https://www.figma.com/design/ppPHkUT3QFofxtv7IK36Lw/Awesome (page "Analytics section · 1440": greyscale wireframe on the left, final design on the right, local components below)
+- **Figma:** https://www.figma.com/design/ppPHkUT3QFofxtv7IK36Lw/Awesome (page "Analytics section · 1440": greyscale wireframe on the left, final design in the middle, local components on the right)
 - **Video:** _(Loom link)_
 
 ## Run locally
@@ -16,7 +16,7 @@ npm test         # anomaly detector unit tests
 npm run build
 ```
 
-No environment variables, no backend. Data is generated deterministically at load time and anchored to yesterday, so the view always reads current. The Figma frame is a snapshot from the day it was designed.
+No environment variables, no backend. Data is generated deterministically at load time, pinned to a reference day (10 Sep 2026) so the Figma frame and the build show the same numbers.
 
 ## Process
 
@@ -30,9 +30,9 @@ No environment variables, no backend. Data is generated deterministically at loa
 
 ## Key design decisions
 
-- **Rates, not raw counts, on the chart.** Send volume in email marketing clusters on Tuesdays and Thursdays. Plotted as raw opens the line looks like a seismograph and clicks flatten against the x-axis. Open rate and click-to-open rate share one axis, sit calm around their baselines, and make the anomalies obvious. Raw counts stay in the tooltip.
+- **Rates, not raw counts, on the chart.** Send volume in email marketing swings with the campaign calendar, heavy on send days and quiet at weekends. Plotted as raw opens the line looks like a seismograph and clicks flatten against the x-axis. Open rate and click-to-open rate share one axis, sit calm around their baselines, and make the anomalies obvious. Raw counts stay in the tooltip.
 - **One loud colour.** Indigo carries the brand and the primary series; ink carries the second series; the only saturated accent is Tomato, reserved for anomalies (marks, chips, the active card). Text and filled chips use a deeper shade of it so they pass 4.5:1. Everything else is grey.
-- **Type.** DM Sans for headings and UI (SemiBold 24 title, Medium 18 card titles, Medium 24 KPI values), Inter as the body fallback, DM Mono for the numbered chips and deltas so they read as data.
+- **Type.** DM Sans throughout (SemiBold 24 title, Medium 18 card titles, Medium 24 KPI values, Regular 14 and 12 for body and labels), DM Mono for the numbered chips and deltas so they read as data.
 - **Accessibility.** All text is at or above 4.5:1 against its actual background, including badge text and the anomaly chips, which meant darkening two library tokens for text use (`scripts/contrast.mjs` checks every pair). Font sizes bottom out at 12px. Toggle, switch and anomaly items are real buttons with `aria-pressed`, `role="switch"` and keyboard focus that also highlights the chart marker.
 
 ## The standout feature: anomaly annotations

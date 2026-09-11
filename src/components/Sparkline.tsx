@@ -5,7 +5,7 @@ interface Props {
 }
 
 /** Tiny inline SVG line. No axes; the value + delta carry the numbers. */
-export function Sparkline({ values, width = 96, height = 32 }: Props) {
+export function Sparkline({ values, width = 64, height = 32 }: Props) {
   if (values.length < 2) return null;
   const min = Math.min(...values);
   const max = Math.max(...values);

@@ -24,6 +24,9 @@ const C = {
   tick: 'var(--text-tertiary)',
 };
 
+const MARGIN_TOP = 44;
+const X_TICK_MARGIN = 12;
+
 const tickStyle = {
   fontFamily: 'var(--font-family-heading)',
   fontSize: 12,
@@ -86,9 +89,15 @@ export function PerformanceChart({
       const pillW = 22;
       const pillH = 18;
       const gap = 16; // dot centre to pill edge
-      // Pill hangs below the point; flips above only when the point sits near the axis.
+      // Pill hangs below the point. It flips above only if it would cross the
+      // bottom of the plot. Plot bottom is derived from this point: the plot
+      // starts at MARGIN_TOP and cy = top + (1 - v / yTop) * plotHeight.
       const yTop = yTicks[yTicks.length - 1];
-      const below = payload[line] / yTop > 0.18;
+      const frac = 1 - payload[line] / yTop;
+      const plotBottom = frac > 0.01 ? MARGIN_TOP + (cy - MARGIN_TOP) / frac : Infinity;
+      // The pill may sit over the axis line; it must not reach the date labels
+      // (which start X_TICK_MARGIN below the plot).
+      const below = cy + gap + pillH <= plotBottom + X_TICK_MARGIN - 2;
       const dir = below ? 1 : -1;
       const pillEdge = cy + dir * gap; // near edge of pill
       const pillY = below ? pillEdge : pillEdge - pillH;
@@ -136,7 +145,7 @@ export function PerformanceChart({
   return (
     <div className="chart">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={rows} margin={{ top: 44, right: 12, bottom: 0, left: 0 }}>
+        <LineChart data={rows} margin={{ top: MARGIN_TOP, right: 12, bottom: 0, left: 0 }}>
           <CartesianGrid vertical={false} stroke={C.grid} strokeWidth={1} />
           <XAxis
             dataKey="date"
@@ -145,7 +154,7 @@ export function PerformanceChart({
             tick={tickStyle}
             tickLine={false}
             axisLine={false}
-            tickMargin={12}
+            tickMargin={X_TICK_MARGIN}
             padding={{ left: 8, right: 8 }}
           />
           <YAxis
