@@ -50,7 +50,7 @@ export interface AnomalyOptions {
   threshold?: number;
   /**
    * Practical-significance floor: ignore days that are statistically odd but
-   * only a few percent off baseline. Default 0.25 (25%).
+   * only a few percent off baseline. Default 0.3 (30%).
    */
   minDelta?: number;
   metrics?: AnomalyMetric[];
@@ -58,7 +58,7 @@ export interface AnomalyOptions {
 
 export const DEFAULT_WINDOW = 14;
 export const DEFAULT_THRESHOLD = 2.0;
-export const DEFAULT_MIN_DELTA = 0.25;
+export const DEFAULT_MIN_DELTA = 0.3;
 
 /**
  * Flags days whose metric deviates from the rolling mean of the previous

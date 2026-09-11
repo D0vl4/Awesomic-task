@@ -192,7 +192,6 @@ button:focus-visible,
 .kpi__value-row {
   display: flex;
   align-items: flex-end;
-  flex-wrap: wrap;
   gap: var(--spacing-1) var(--spacing-3);
   margin-top: 7px;
 }
@@ -244,6 +243,9 @@ button:focus-visible,
 @container (max-width: 400px) {
   .kpi__spark {
     display: none;
+  }
+  .kpi__value-row {
+    flex-wrap: wrap;
   }
 }
 

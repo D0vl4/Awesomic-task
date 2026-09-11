@@ -12,16 +12,13 @@ function mulberry32(seed: number) {
   };
 }
 
-const rand = mulberry32(20260909);
-const gauss = () => {
-  // Box-Muller
-  const u = 1 - rand();
-  const v = rand();
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-};
-
 const TOTAL_DAYS = 180; // 90 visible + 90 for the "previous period" comparison
-const END = new Date(Date.UTC(2026, 8, 8)); // 8 Sep 2026, yesterday relative to the mock "today"
+
+/** Last complete day: yesterday, UTC. The dashboard always reads current. */
+export function defaultEnd(now = Date.now()): Date {
+  const d = new Date(now - 86400000);
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+}
 
 /**
  * Deliberate events. Offsets are days before END (0 = END).
@@ -30,13 +27,23 @@ const END = new Date(Date.UTC(2026, 8, 8)); // 8 Sep 2026, yesterday relative to
 const EVENTS: Record<number, { opens?: number; clicks?: number; sent?: number; revenue?: number; note: string }> = {
   61: { opens: 1.55, clicks: 1.35, revenue: 1.6, note: 'Summer sale launch to full list' },
   27: { sent: 2.4, opens: 0.62, clicks: 0.55, note: 'Re-engagement blast to lapsed segment' },
-  9: { clicks: 0.35, revenue: 0.3, note: 'Broken CTA link in Tuesday newsletter' },
+  9: { clicks: 0.35, revenue: 0.3, note: 'Broken CTA link in the newsletter' },
 };
 
-export function generateSeries(): DayPoint[] {
+export function generateSeries(end: Date = defaultEnd()): DayPoint[] {
+  // Fixed seed: the same shape on every reload within a day.
+  const rand = mulberry32(20260909);
+  const gauss = () => {
+    // Box-Muller, clipped at 2 sigma: ordinary days wobble, they do not
+    // spike. The spikes are the injected events below.
+    const u = 1 - rand();
+    const v = rand();
+    const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    return Math.max(-2, Math.min(2, z));
+  };
   const out: DayPoint[] = [];
   for (let i = TOTAL_DAYS - 1; i >= 0; i--) {
-    const d = new Date(END.getTime() - i * 86400000);
+    const d = new Date(end.getTime() - i * 86400000);
     const dow = d.getUTCDay(); // 0 Sun .. 6 Sat
     const weekend = dow === 0 || dow === 6;
     const t = (TOTAL_DAYS - 1 - i) / TOTAL_DAYS; // 0 → 1 over time, gentle growth
@@ -48,7 +55,7 @@ export function generateSeries(): DayPoint[] {
 
     let openRate = (weekend ? 0.19 : 0.225) * (1 + 0.035 * gauss()) + 0.012 * t;
     let ctr = 0.031 * (1 + 0.06 * gauss()); // clicks per open... roughly
-    let rpc = 4.1 * (1 + 0.08 * gauss()); // revenue per click
+    let rpc = 4.1 * (1 + 0.06 * gauss()); // revenue per click
 
     const ev = EVENTS[i];
     if (ev) {

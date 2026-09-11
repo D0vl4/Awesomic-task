@@ -2,9 +2,9 @@
 
 Design Engineer test task for Awesomic. The main analytics view of an email-marketing SaaS (Klaviyo / Customer.io register): three KPI cards, one chart, an anomaly rail as the standout feature, and a timeframe filter with real logic.
 
-- **Live build:** _(Vercel URL, added on deploy)_
+- **Live build:** https://awesomic-task.vercel.app/
 - **Source:** https://github.com/D0vl4/Awesomic-task
-- **Figma:** https://www.figma.com/design/ppPHkUT3QFofxtv7IK36Lw/Awesome (page "Analytics section · 1440"; the earlier Finance Hub direction is kept on its own page)
+- **Figma:** https://www.figma.com/design/ppPHkUT3QFofxtv7IK36Lw/Awesome (page "Analytics section · 1440": greyscale wireframe on the left, final design on the right, local components below)
 - **Video:** _(Loom link)_
 
 ## Run locally
@@ -16,13 +16,13 @@ npm test         # anomaly detector unit tests
 npm run build
 ```
 
-No environment variables, no backend. Data is generated deterministically at load time.
+No environment variables, no backend. Data is generated deterministically at load time and anchored to yesterday, so the view always reads current. The Figma frame is a snapshot from the day it was designed.
 
 ## Process
 
-**1. Direction first.** I started from an earlier light dashboard concept I had in Figma (indigo accent, white cards on an off-white ground, hairline borders, DM Sans headings). It already had a variable collection with semantic colour, spacing and radius tokens. I kept that register and its tokens, and rebuilt the content for email marketing rather than adapting the finance screen.
+**1. Wireframe first.** I blocked the section in greyscale at 1440: header, three KPI cards, chart, anomaly rail. This settled the proportions and the placement of the standout feature before any colour or type decisions.
 
-**2. Cut to the brief.** The earlier frame had two charts, a table, a sidebar and an assistant panel. The brief asks for a single section, so the new page is exactly that: header, KPI row, chart, anomaly rail. No app shell.
+**2. Apply the system.** I then applied the register and token set from my own dashboard library (indigo accent, white cards on an off-white ground, hairline borders, DM Sans headings) and its variable collection for semantic colour, spacing and radius. The brief asks for a single section, so that is all there is: no sidebar, no navigation, no app shell.
 
 **3. Design and build together.** Tokens live in one place (`src/tokens.css`) and their names mirror the Figma variables one to one. The chart in Figma is the SVG that Recharts actually renders in the build, imported and re-bound to the same variables, so the two cannot drift.
 
@@ -43,7 +43,7 @@ How it works (`src/lib/anomalies.ts`):
 
 1. For each day in the visible range, take the previous 14 days as the baseline.
 2. Compute the rolling mean and standard deviation for three volume-normalised metrics: open rate, click-to-open rate, revenue per recipient.
-3. Flag a day when its z-score is at least 2.0 **and** the change is at least 25% off baseline. The second condition is the practical-significance floor: a statistically odd 4% wobble is not worth a marketer's attention.
+3. Flag a day when its z-score is at least 2.0 **and** the change is at least 30% off baseline. The second condition is the practical-significance floor: a statistically odd 4% wobble is not worth a marketer's attention.
 4. Keep one flag per day (the metric with the largest |z|) so a single campaign event does not produce three near-identical cards.
 
 Each flag is a numbered chip on the chart and a card in the rail. Hovering or focusing either one highlights the other. The card carries the plain-language reading ("Click-to-open was 47% below its 14-day baseline"), the campaign note, the observed vs baseline value and the send volume.
@@ -72,7 +72,7 @@ Why this over an "AI insight" callout: it is real logic that a reviewer can read
 
 | Step | Time |
 | --- | --- |
-| Reading the brief, reviewing the earlier Figma direction, planning | 0:30 |
+| Reading the brief, wireframe, planning | 0:30 |
 | Data model, anomaly detector, tests | 0:35 |
 | Components, chart, interactions | 1:10 |
 | Figma page, components, fidelity pass | 0:50 |
