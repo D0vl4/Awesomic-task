@@ -85,21 +85,28 @@ export function PerformanceChart({
       const r = active ? 6 : 4.5;
       const pillW = 22;
       const pillH = 18;
-      const lift = 22;
+      const gap = 16; // dot centre to pill edge
+      // Pill hangs below the point; flips above only when the point sits near the axis.
+      const yTop = yTicks[yTicks.length - 1];
+      const below = payload[line] / yTop > 0.18;
+      const dir = below ? 1 : -1;
+      const pillEdge = cy + dir * gap; // near edge of pill
+      const pillY = below ? pillEdge : pillEdge - pillH;
       return (
         <g
           key={key}
           style={{ cursor: 'pointer' }}
           onMouseEnter={() => onHoverAnomaly(hit.a.id)}
           onMouseLeave={() => onHoverAnomaly(null)}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => onSelectAnomaly(hit.a.id)}
           role="button"
           aria-label={`Anomaly ${hit.n} on ${weekdayDate(hit.a.date)}`}
         >
-          <line x1={cx} y1={cy - r} x2={cx} y2={cy - lift} stroke={C.anomaly} strokeWidth={1} strokeDasharray="2 2" />
+          <line x1={cx} y1={cy + dir * (r + 2)} x2={cx} y2={pillEdge} stroke={C.anomaly} strokeWidth={1} strokeDasharray="2 2" />
           <rect
             x={cx - pillW / 2}
-            y={cy - lift - pillH}
+            y={pillY}
             width={pillW}
             height={pillH}
             rx={4}
@@ -109,7 +116,7 @@ export function PerformanceChart({
           />
           <text
             x={cx}
-            y={cy - lift - pillH / 2 + 4}
+            y={pillY + pillH / 2 + 4}
             textAnchor="middle"
             fontFamily="var(--font-family-mono)"
             fontSize={11}
@@ -123,8 +130,8 @@ export function PerformanceChart({
       );
     };
 
-  const openDot = useMemo(() => makeDot('openRate'), [byDate, activeAnomalyId]); // eslint-disable-line react-hooks/exhaustive-deps
-  const clickDot = useMemo(() => makeDot('clickRate'), [byDate, activeAnomalyId]); // eslint-disable-line react-hooks/exhaustive-deps
+  const openDot = useMemo(() => makeDot('openRate'), [byDate, activeAnomalyId, yTicks]); // eslint-disable-line react-hooks/exhaustive-deps
+  const clickDot = useMemo(() => makeDot('clickRate'), [byDate, activeAnomalyId, yTicks]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="chart">

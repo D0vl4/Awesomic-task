@@ -388,8 +388,8 @@ button:focus-visible,
 }
 
 .chart .recharts-wrapper:focus,
-.chart .recharts-surface:focus,
-.chart .recharts-layer:focus {
+.chart svg:focus,
+.chart svg *:focus {
   outline: none;
 }
 
