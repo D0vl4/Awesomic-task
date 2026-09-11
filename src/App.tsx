@@ -5,6 +5,7 @@ import { chartRows, computeKpis, sliceSeries } from './lib/aggregate';
 import { detectAnomalies } from './lib/anomalies';
 import { shortDate } from './lib/format';
 import { AnomalyRail } from './components/AnomalyRail';
+import { BrandMark } from './components/BrandMark';
 import { CompareToggle } from './components/CompareToggle';
 import { IconMail, IconOpen, IconRevenue } from './components/Icons';
 import { KpiCard } from './components/KpiCard';
@@ -39,8 +40,8 @@ export default function App() {
     <main className="page">
       <header className="header">
         <div className="header__brand">
-          <span className="brand" aria-label="Awesomic">
-            A<span className="brand__dot">.</span>
+          <span className="brand" role="img" aria-label="Awesomic">
+            <BrandMark />
           </span>
           <div>
             <h1 className="header__title">Campaign performance</h1>

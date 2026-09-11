@@ -71,17 +71,8 @@ button:focus-visible,
   border-radius: var(--radius-md);
   background: var(--text-primary);
   color: var(--text-inverse);
-  font-family: var(--font-family-heading);
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 32px;
-  text-align: center;
-  letter-spacing: -0.02em;
-  user-select: none;
-}
-
-.brand__dot {
-  color: var(--color-brand-tomato);
+  display: grid;
+  place-items: center;
 }
 
 .header__title {

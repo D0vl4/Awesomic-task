@@ -58,7 +58,7 @@ Why this over an "AI insight" callout: it is real logic that a reviewer can read
 
 ## Tools
 
-- **Figma** for the design, using the existing variable collection and the Card Shell, Page title and Tab-Toggle components from my library. KPI card, Anomaly item (Default / Active), Switch and Brand mark are new local components on the page.
+- **Figma** for the design, using the existing variable collection and the Card Shell, Page title and Tab-Toggle components from my library. KPI card, Anomaly item (Default / Active), Switch and Brand mark (the Awesomic smile, from awesomic.com) are new local components on the page.
 - **Vite + React + TypeScript**, **Recharts** for the chart (styled from tokens: no default grid box, custom ticks, custom dot renderer for the flags, custom tooltip), **Vitest** for the detector tests, **Playwright** for the screenshot loop.
 - **Claude Code** (Anthropic) as pair: scaffolding, the anomaly maths and its tests, Recharts customisation, the Figma Plugin API scripts that built the page from the same data as the build, and the contrast script. I directed the design decisions, reviewed every screenshot, and adjusted the output where it diverged from the design (chart metric choice, flag placement per series, badge and chip colours).
 
